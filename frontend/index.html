@@ -8,6 +8,104 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+
+
+       /* --- TESTIMONIALS --- */
+.testimonials-section {
+    padding: 10rem 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.testimonials-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6rem;
+}
+
+.testimonials-text {
+    width: 50%;
+}
+
+.testimonials-text h2 {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 800;
+    line-height: 0.9;
+    margin-bottom: 4rem;
+    text-transform: uppercase;
+}
+
+.testimonials-text h2 span {
+    color: var(--accent);
+    font-style: italic;
+}
+
+.testimonial-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.testimonial-item {
+    padding: 1.5rem;
+    border-left: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    opacity: 0.5;
+}
+
+.testimonial-item:hover,
+.testimonial-item.active {
+    border-left: 2px solid var(--accent);
+    opacity: 1;
+    transform: translateX(10px);
+}
+
+.testimonial-item p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-style: italic;
+    color: var(--text);
+}
+
+.testimonial-item h4 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.testimonial-item span {
+    font-size: 0.85rem;
+    color: var(--grey);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.testimonial-image-wrapper {
+    width: 40%;
+    height: 55vh;
+    position: sticky;
+    top: 20vh;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+}
+
+.testimonial-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+@media (max-width: 900px) {
+    .testimonials-container { flex-direction: column-reverse; }
+    .testimonials-text, .testimonial-image-wrapper { width: 100%; }
+    .testimonial-image-wrapper { height: 40vh; position: relative; top: 0; margin-bottom: 3rem; }
+}
         :root {
             --bg: #F4F1EA;
             --text: #1A1A1A;
@@ -429,13 +527,7 @@
             font-size: 0.95rem;
             line-height: 1.5;
         }
-
-        /* --- FOOTER --- */
-        footer {
-            background: var(--text);
-            color: #fff;
-            padding: 8rem 3rem 4rem;
-        }
+        
 
         .footer-top {
             max-width: 1400px;
@@ -542,9 +634,6 @@
     </style>
 </head>
 <body>
-      /*<div class="cursor-dot" id="cursor-dot"></div>
-      <div class="cursor-outline" id="cursor-outline"></div>*/
-
     <nav id="mainNav">
         <div class="logo">Nordic Nook</div>
         <div class="nav-links">
@@ -664,7 +753,49 @@
             </div>
         </div>
     </section>
+    /*<!-- TESTIMONIALS -->*/
 
+    <section class="testimonials-section" id="recommendations">
+    <div class="testimonials-container">
+        <div class="testimonials-text">
+            <h2 class="reveal-up">What they<br><span>say.</span></h2>
+            <div class="testimonial-list">
+                <div class="testimonial-item active" data-img="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=800&auto=format&fit=crop">
+                    <p>"A true refuge. The quiet hum of the espresso machine and the natural light make it the only place I can actually finish a chapter."</p>
+                    <h4>Erik Larsen</h4>
+                    <span>Local Author</span>
+                </div>
+                <div class="testimonial-item" data-img="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop">
+                    <p>"I come for the aesthetics, but I stay for the oat lattes. It feels like sitting in a living room rather than a commercial space."</p>
+                    <h4>Ingrid Haugen</h4>
+                    <span>Furniture Designer</span>
+                </div>
+                <div class="testimonial-item" data-img="https://images.unsplash.com/photo-1623582854588-d60de57fa33f?q=80&w=800&auto=format&fit=crop">
+                    <p>"The best filter coffee in the city, hands down. You can taste the intention behind the roast. It's my mandatory morning stop."</p>
+                    <h4>Thomas Nilsen</h4>
+                    <span>Architect</span>
+                </div>
+                <div class="testimonial-item" data-img="https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=800&auto=format&fit=crop">
+                    <p>"Outstanding pastries and an atmosphere that actually forces you to put your phone away. A rare gem in the city center."</p>
+                    <h4>Lisa Thompson</h4>
+                    <span>Gallery Curator</span>
+                </div>
+            </div>
+        </div>
+        <div class="testimonial-image-wrapper">
+            <img id="testimonialImg" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=800&auto=format&fit=crop" alt="Nordic Nook Guest">
+        </div>
+    </div>
+</section>
+
+    /* --- FOOTER --- */
+
+    footer {
+        background: var(--text);
+        color: #fff;
+        padding: 8rem 3rem 4rem;
+    } 
+    
     <!-- FOOTER -->
     <footer id="find-us">
         <div class="footer-top">
@@ -750,6 +881,39 @@
                 cinematicBg.style.transform = `scale(${scale})`;
             };
             window.addEventListener('scroll', handleCinematicScroll);
+
+                        // --- ANIMATED TESTIMONIALS (Aceternity Style) ---
+                        const tItems = document.querySelectorAll('.testimonial-item');
+            const tImg = document.getElementById('testimonialImg');
+            
+            const changeTestimonial = (e) => {
+                const item = e.currentTarget;
+                const newSrc = item.getAttribute('data-img');
+                
+                // Update active states on text
+                tItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Animate image out
+                tImg.style.opacity = '0';
+                tImg.style.transform = 'translateY(-20px) scale(0.98)';
+                
+                // Swap image and animate in
+                setTimeout(() => {
+                    tImg.src = newSrc;
+                    tImg.style.transform = 'translateY(20px) scale(0.98)'; // Prep below frame
+                    
+                    // Force browser reflow to reset animation
+                    void tImg.offsetWidth; 
+                    
+                    tImg.style.opacity = '1';
+                    tImg.style.transform = 'translateY(0) scale(1)';
+                }, 300);
+            };
+
+            tItems.forEach(item => {
+                item.addEventListener('mouseenter', changeTestimonial);
+            });
 
             // --- 5. INTERSECTION OBSERVER FOR REVEALS ---
             const revealElements = document.querySelectorAll('.reveal-up, .reveal-left');
