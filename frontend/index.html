@@ -32,6 +32,69 @@
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--text); border-radius: 3px; }
 
+        /* --- CUSTOM CURSOR --- */
+@media (pointer: fine) { /* Only shows on devices with a mouse/trackpad */
+    * {
+        cursor: none !important;
+    }
+
+    .cursor-dot {
+        width: 8px;
+        height: 8px;
+        background-color: var(--text);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease;
+    }
+
+    .cursor-outline {
+        width: 40px;
+        height: 40px;
+        border: 1.5px solid var(--text);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+    }
+
+    /* Hover states for interactive elements */
+    .cursor-dot.hovering {
+        width: 0px;
+        height: 0px;
+        background-color: var(--accent);
+    }
+
+    .cursor-outline.hovering {
+        width: 60px;
+        height: 60px;
+        border-color: var(--accent);
+        background-color: rgba(212, 168, 67, 0.1); /* Accent color with low opacity */
+    }
+    
+    /* Specific tweak for text hovering */
+    .cursor-dot.text-hover {
+        width: 4px;
+        height: 40px;
+        border-radius: 2px;
+        background-color: var(--text);
+    }
+
+    .cursor-outline.text-hover {
+        width: 0px;
+        height: 0px;
+        border: 0px solid transparent;
+    }
+}
+
         /* --- NAVIGATION --- */
         nav {
             position: fixed;
@@ -541,6 +604,8 @@
     </style>
 </head>
 <body>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
 
     <nav id="mainNav">
         <div class="logo">Nordic Nook</div>
@@ -677,8 +742,7 @@
                 <p><a href="mailto:heia@nordicnook.no">heia@nordicnook.no</a></p>
             </div>
         </div>
-        <div class="footer-bottom">
-            <div class="footer-bottom">
+                <div class="footer-bottom">
                 © 2026 Nordic Nook. A small nook for slow mornings.
             <span>Designed with quiet intention</span>
         </div>
@@ -687,6 +751,65 @@
     <!-- Advanced Scroll Logic -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+
+            document.addEventListener("DOMContentLoaded", () => {
+            
+            // --- CUSTOM CURSOR LOGIC ---
+            const dot = document.getElementById('cursor-dot');
+            const outline = document.getElementById('cursor-outline');
+            
+            // Only run if the elements exist (failsafe for mobile)
+            if (dot && outline) {
+                let mouseX = 0, mouseY = 0;
+                let outlineX = 0, outlineY = 0;
+        
+                // Track the actual mouse position instantly for the inner dot
+                window.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    dot.style.left = `${mouseX}px`;
+                    dot.style.top = `${mouseY}px`;
+                });
+        
+                // Animate the outer circle with a smooth delay (Lerp)
+                function animateCursor() {
+                    // The 0.15 is the speed factor (lower = slower/draggier)
+                    outlineX += (mouseX - outlineX) * 0.15;
+                    outlineY += (mouseY - outlineY) * 0.15;
+                    
+                    outline.style.left = `${outlineX}px`;
+                    outline.style.top = `${outlineY}px`;
+                    
+                    requestAnimationFrame(animateCursor);
+                }
+                animateCursor();
+        
+                // Add hover classes to interactive elements
+                const interactiveElements = document.querySelectorAll('a, button, .btn-primary, .menu-item, .h-card');
+                interactiveElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        dot.classList.add('hovering');
+                        outline.classList.add('hovering');
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        dot.classList.remove('hovering');
+                        outline.classList.remove('hovering');
+                    });
+                });
+        
+                // Add specific text-hover class to big text blocks
+                const textElements = document.querySelectorAll('h1, h2, .mask-text');
+                textElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        dot.classList.add('text-hover');
+                        outline.classList.add('text-hover');
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        dot.classList.remove('text-hover');
+                        outline.classList.remove('text-hover');
+                    });
+                });
+            }
             
             // --- 1. NAV SCROLL ---
             const nav = document.getElementById('mainNav');
@@ -762,6 +885,7 @@
             revealElements.forEach(el => revealObserver.observe(el));
 
         });
+    });
     </script>
 </body>
 </html>
