@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nordic Nook — Café & Refuge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F4F1EA;
+            --text: #1A1A1A;
+            --accent: #D4A843;
+            --grey: #8A8A8A;
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-weight: 400;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--text); border-radius: 3px; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 100;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        nav.scrolled {
+            padding: 1.2rem 3rem;
+            background-color: rgba(244, 241, 234, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            text-shadow: 0 1px 10px rgba(255,255,255,0.8);
+        }
+
+        .nav-links { display: flex; gap: 2.5rem; }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+            position: relative;
+            text-shadow: 0 1px 10px rgba(255,255,255,0.8);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+
+        /* --- HERO --- */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 3rem 6rem 3rem;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: -10%; left: 0;
+            width: 100%; height: 120%;
+            background-image: url('https://z-cdn-media.chatglm.cn/files/70205572-649a-44bd-893a-4ee2e8ab9dae.png?auth_key=1888253933-d395e17e222a44309f6a2d2f79f42ed8-0-83ddb59dde3188a87da6684f7dae07d5');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            will-change: transform;
+            /* Ken Burns effect */
+            animation: slowZoom 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes slowZoom {
+            0% { transform: scale(1.0); }
+            100% { transform: scale(1.1); }
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .hero-text h1 {
+            font-family: var(--font-display);
+            font-size: clamp(5rem, 14vw, 14rem);
+            line-height: 0.85;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-text h1 span {
+            display: block;
+            text-align: right;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .hero-meta {
+            text-align: right;
+            color: #fff;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            margin-bottom: 1rem;
+        }
+
+        .hero-meta p {
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .scroll-indicator {
+            width: 24px; height: 40px;
+            border: 1.5px solid #fff;
+            border-radius: 12px;
+            position: relative;
+            margin-left: auto;
+            margin-top: 2rem;
+            opacity: 0.8;
+        }
+
+        .scroll-indicator::before {
+            content: '';
+            position: absolute;
+            top: 8px; left: 50%;
+            transform: translateX(-50%);
+            width: 3px; height: 8px;
+            background: #fff;
+            border-radius: 2px;
+            animation: scrollBounce 1.5s infinite;
+        }
+
+        @keyframes scrollBounce {
+            0%, 100% { top: 8px; opacity: 1; }
+            50% { top: 20px; opacity: 0.3; }
+        }
+
+        /* --- TEXT MASK REVEAL SECTION --- */
+        .mask-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: var(--text);
+        }
+
+        .mask-text {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 12vw, 12rem);
+            font-weight: 800;
+            color: var(--bg);
+            text-transform: uppercase;
+            z-index: 2;
+            position: relative;
+            text-align: center;
+            line-height: 0.9;
+            mix-blend-mode: difference;
+            color: #fff;
+        }
+
+        .mask-image-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            will-change: transform;
+        }
+
+        .mask-image-container img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            /* Using your Latte/Interior detail image here */
+        }
+
+        /* --- HORIZONTAL SCROLL SECTION --- */
+        .horizontal-section {
+            height: 300vh; /* Gives enough scroll room to move horizontally */
+            position: relative;
+            background: var(--bg);
+        }
+
+        .horizontal-sticky {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .horizontal-header {
+            padding: 0 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .horizontal-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 4rem);
+            font-weight: 700;
+        }
+
+        .horizontal-header h2 span {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .horizontal-track {
+            display: flex;
+            gap: 2rem;
+            padding: 0 3rem;
+            will-change: transform;
+            height: 70vh;
+        }
+
+        .h-card {
+            min-width: 60vw;
+            height: 100%;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .h-card img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .h-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .h-card-caption {
+            position: absolute;
+            bottom: 2rem; left: 2rem;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 1.5rem;
+            max-width: 300px;
+        }
+
+        .h-card-caption h3 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .h-card-caption p {
+            font-size: 0.85rem;
+            color: var(--grey);
+            line-height: 1.4;
+        }
+
+        /* --- CINEMATIC FULL WIDTH (Dolly Zoom) --- */
+        .cinematic-section {
+            height: 120vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .cinematic-bg {
+            position: absolute;
+            top: -10%; left: 0;
+            width: 100%; height: 120%;
+            /* Using your Night/Polka Kafe image here */
+            background-image: url('https://z-cdn-media.chatglm.cn/files/9a06075c-1d6e-4f41-98e6-fc8461f33ab8.jpg?auth_key=1888254797-461eb434990d40fe8afcf60afc663477-0-c0c0ed16cad71c5a1a8bdef1d19b8d8f');
+            background-size: cover;
+            background-position: center;
+            will-change: transform;
+        }
+
+        .cinematic-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            width: 100%;
+        }
+
+        .cinematic-content h2 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 800;
+            color: #fff;
+            line-height: 0.9;
+            text-transform: uppercase;
+            text-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            max-width: 800px;
+        }
+
+        .cinematic-content h2 span {
+            display: block;
+            color: var(--accent);
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        /* --- MENU TEASER --- */
+        .menu-teaser {
+            padding: 10rem 3rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .marquee-wrapper {
+            overflow: hidden;
+            margin-bottom: 6rem;
+            mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 4rem;
+            animation: marquee 25s linear infinite;
+            width: max-content;
+        }
+
+        .marquee-track h2 {
+            font-family: var(--font-display);
+            font-size: 8vw;
+            font-weight: 800;
+            text-transform: uppercase;
+            white-space: nowrap;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text);
+            opacity: 0.3;
+        }
+
+        .marquee-track h2.filled {
+            color: var(--text);
+            -webkit-text-stroke: 0;
+            opacity: 1;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .menu-item {
+            padding: 3rem 2rem;
+            background: #fff;
+            border-radius: 4px;
+            text-align: left;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+        }
+
+        .menu-item h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-item .price {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .menu-item p {
+            color: var(--grey);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--text);
+            color: #fff;
+            padding: 8rem 3rem 4rem;
+        }
+
+        .footer-top {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 6rem;
+            padding-bottom: 4rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-cta h2 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 6vw, 6rem);
+            font-weight: 800;
+            line-height: 0.9;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .footer-cta h2 span { color: var(--accent); }
+
+        .btn-primary {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--text);
+            padding: 1.2rem 3rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #fff;
+            transform: translateY(-2px);
+        }
+
+        .footer-info { text-align: right; }
+
+        .footer-info p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .footer-info a {
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            transition: border-color 0.3s ease;
+        }
+
+        .footer-info a:hover { border-color: var(--accent); }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* --- REVEAL ANIMATIONS --- */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-up.revealed { opacity: 1; transform: translateY(0); }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-80px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-left.revealed { opacity: 1; transform: translateX(0); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            nav { padding: 1.5rem; }
+            .nav-links { display: none; }
+            .hero { padding: 0 1.5rem 3rem 1.5rem; }
+            .mask-text { font-size: 3rem; }
+            .horizontal-section { height: auto; }
+            .horizontal-sticky { height: auto; position: relative; }
+            .horizontal-track { flex-direction: column; height: auto; transform: none !important; }
+            .h-card { min-width: 100%; height: 50vh; }
+            .cinematic-content h2 { font-size: 3rem; }
+            .menu-grid { grid-template-columns: 1fr; }
+            .footer-top { flex-direction: column; gap: 3rem; align-items: flex-start; }
+            .footer-info { text-align: left; }
+            .footer-bottom { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="mainNav">
+        <div class="logo">Nordic Nook</div>
+        <div class="nav-links">
+            <a href="#spaces">Spaces</a>
+            <a href="#provisions">Provisions</a>
+            <a href="#find-us">Find Us</a>
+        </div>
+    </nav>
+
+    <!-- 1. HERO -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Nordic<br><span>Nook</span></h1>
+            </div>
+            <div class="hero-meta">
+                <p>Scandinavian Café & Refuge</p>
+                <p>Open Daily 07:00 – 18:00</p>
+                <div class="scroll-indicator"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. IMAGE MASK REVEAL (Artisano Style) -->
+    <section class="mask-section">
+        <div class="mask-text">Crafted<br>Daily</div>
+        <div class="mask-image-container" id="maskContainer">
+            <!-- Using your detailed Latte/Interior image -->
+            <img src="https://z-cdn-media.chatglm.cn/files/66da052e-2db8-4530-8755-07eddcd0a44e.jpg?auth_key=1888254797-57e69a4b93bc4e3d90fa5d07cc364a64-0-e070ab27c08bbb224af5db416424040e" alt="Latte art and interior details">
+        </div>
+    </section>
+
+    <!-- 3. HORIZONTAL SCROLL GALLERY -->
+    <section class="horizontal-section" id="spaces">
+        <div class="horizontal-sticky">
+            <div class="horizontal-header reveal-up">
+                <h2>Find your <span>corner.</span></h2>
+            </div>
+            <div class="horizontal-track" id="horizontalTrack">
+                <!-- Card 1: Green Exterior -->
+                <div class="h-card">
+                    <img src="https://z-cdn-media.chatglm.cn/files/c90bf107-d5f3-4e7a-81ba-45c4aba579dd.jpg?auth_key=1888254797-2a93170be49046dc931b92737b110071-0-e62c512224af14dd9c03387da47a26a4" alt="Outdoor green exterior seating">
+                    <div class="h-card-caption">
+                        <h3>The Terrace</h3>
+                        <p>Shaded by the canopy of old city trees. The best seat for an afternoon pause.</p>
+                    </div>
+                </div>
+                
+                <!-- Card 2: Moody Night -->
+                <div class="h-card">
+                    <img src="https://z-cdn-media.chatglm.cn/files/9a06075c-1d6e-4f41-98e6-fc8461f33ab8.jpg?auth_key=1888254797-461eb434990d40fe8afcf60afc663477-0-c0c0ed16cad71c5a1a8bdef1d19b8d8f" alt="Moody night time exterior">
+                    <div class="h-card-caption">
+                        <h3>After Dark</h3>
+                        <p>As the city quiets, the warm glow from our windows becomes a beacon.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Unsplash filler for smooth scroll pacing -->
+                <div class="h-card">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2000&auto=format&fit=crop" alt="Minimalist light wood cafe interior">
+                    <div class="h-card-caption">
+                        <h3>The Main Hall</h3>
+                        <p>White brick, black steel, and blonde timber. Built for lingering.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. CINEMATIC DOLLY ZOOM SECTION -->
+    <section class="cinematic-section">
+        <div class="cinematic-bg" id="cinematicBg"></div>
+        <div class="cinematic-content">
+            <h2 class="reveal-left">A refuge<br>from the <span>rush.</span></h2>
+        </div>
+    </section>
+
+    <!-- 5. MENU TEASER -->
+    <section class="menu-teaser" id="provisions">
+        <div class="marquee-wrapper">
+            <div class="marquee-track">
+                <h2 class="filled">Daily Provisions</h2>
+                <h2>•</h2>
+                <h2>Daily Provisions</h2>
+                <h2>•</h2>
+                <h2 class="filled">Daily Provisions</h2>
+                <h2>•</h2>
+                <h2>Daily Provisions</h2>
+                <h2>•</h2>
+                <h2 class="filled">Daily Provisions</h2>
+                <h2>•</h2>
+                <h2>Daily Provisions</h2>
+                <h2>•</h2>
+                <h2 class="filled">Daily Provisions</h2>
+                <h2>•</h2>
+                <h2>Daily Provisions</h2>
+                <h2>•</h2>
+            </div>
+        </div>
+
+        <div class="menu-grid">
+            <div class="menu-item reveal-up">
+                <h3>Filter Coffee</h3>
+                <span class="price">45 NOK</span>
+                <p>Brewed by the cup. Today’s batch features notes of red apple and dark chocolate.</p>
+            </div>
+            <div class="menu-item reveal-up">
+                <h3>Kanelbolle</h3>
+                <span class="price">55 NOK</span>
+                <p>The essential Scandinavian cinnamon bun. Warm, gooey, and dusted with pearl sugar.</p>
+            </div>
+            <div class="menu-item reveal-up">
+                <h3>Oat Latte</h3>
+                <span class="price">65 NOK</span>
+                <p>Double shot espresso steamed with local Norwegian oat milk. Creamy and thick.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="find-us">
+        <div class="footer-top">
+            <div class="footer-cta reveal-up">
+                <h2>Find your<br><span>Nook.</span></h2>
+                <a href="#" class="btn-primary">Get Directions</a>
+            </div>
+            <div class="footer-info reveal-up">
+                <p>Nordregata 12<br>0159 Oslo, Norway</p>
+                <br>
+                <p>Hours: Mon-Fri 07:00–18:00<br>Sat-Sun 09:00–17:00</p>
+                <br>
+                <p><a href="mailto:heia@nordicnook.no">heia@nordicnook.no</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2024 Nordic Nook</span>
+            <span>Designed with quiet intention</span>
+        </div>
+    </footer>
+
+    <!-- Advanced Scroll Logic -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // --- 1. NAV SCROLL ---
+            const nav = document.getElementById('mainNav');
+            const handleNavScroll = () => {
+                nav.classList.toggle('scrolled', window.scrollY > 100);
+            };
+            window.addEventListener('scroll', handleNavScroll);
+
+            // --- 2. TEXT MASK REVEAL EFFECT ---
+            const maskContainer = document.getElementById('maskContainer');
+            const maskSection = document.querySelector('.mask-section');
+            
+            const handleMaskScroll = () => {
+                const rect = maskSection.getBoundingClientRect();
+                // Progress from 0 (section entering bottom) to 1 (section leaving top)
+                const sectionHeight = maskSection.offsetHeight;
+                let progress = -rect.top / sectionHeight;
+                progress = Math.max(Math.min(progress, 1), 0);
+
+                // Move image from Y: 100% (hidden below) to Y: 0% (covering text)
+                const translateY = (1 - progress) * 100;
+                maskContainer.style.transform = `translateY(${translateY}%)`;
+            };
+            window.addEventListener('scroll', handleMaskScroll);
+
+            // --- 3. HORIZONTAL SCROLL EFFECT ---
+            const hSection = document.querySelector('.horizontal-section');
+            const hTrack = document.getElementById('horizontalTrack');
+            
+            const handleHorizontalScroll = () => {
+                if (window.innerWidth <= 900) return; // Disable on mobile
+                
+                const rect = hSection.getBoundingClientRect();
+                const sectionHeight = hSection.offsetHeight - window.innerHeight;
+                let progress = -rect.top / sectionHeight;
+                progress = Math.max(Math.min(progress, 1), 0);
+
+                // Calculate how far to translate the track
+                const trackWidth = hTrack.scrollWidth;
+                const windowWidth = window.innerWidth;
+                const maxTranslate = trackWidth - windowWidth + 100; // +100 for padding
+                
+                hTrack.style.transform = `translateX(${-progress * maxTranslate}px)`;
+            };
+            window.addEventListener('scroll', handleHorizontalScroll);
+
+            // --- 4. CINEMATIC DOLLY ZOOM ---
+            const cinematicBg = document.getElementById('cinematicBg');
+            const cinematicSection = document.querySelector('.cinematic-section');
+            
+            const handleCinematicScroll = () => {
+                const rect = cinematicSection.getBoundingClientRect();
+                const sectionHeight = cinematicSection.offsetHeight - window.innerHeight;
+                let progress = -rect.top / sectionHeight;
+                progress = Math.max(Math.min(progress, 1), 0);
+
+                // Scale from 1.0 to 1.3 as user scrolls
+                const scale = 1 + (progress * 0.3);
+                cinematicBg.style.transform = `scale(${scale})`;
+            };
+            window.addEventListener('scroll', handleCinematicScroll);
+
+            // --- 5. INTERSECTION OBSERVER FOR REVEALS ---
+            const revealElements = document.querySelectorAll('.reveal-up, .reveal-left');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+        });
+    </script>
+</body>
+</html>
