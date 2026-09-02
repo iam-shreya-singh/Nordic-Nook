@@ -9,6 +9,91 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
 
+        /* --- FLOATING SPICES/ORGANICS --- */
+.menu-teaser {
+    position: relative; /* Ensures floating objects stay contained */
+}
+
+.floating-spices {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.spice {
+    position: absolute;
+    border-radius: 50% 40% 60% 50% / 50% 60% 40% 50%; /* Organic blob shape */
+    opacity: 0.12; /* Very subtle */
+    filter: blur(1px);
+}
+
+/* Shape 1: Large, slow drift (Cardamom pod vibe) */
+.s1 {
+    width: 60px; height: 60px;
+    background: var(--accent);
+    top: 20%; left: 10%;
+    animation: drift1 18s ease-in-out infinite alternate;
+}
+
+/* Shape 2: Small, fast drift (Coffee bean vibe) */
+.s2 {
+    width: 25px; height: 35px;
+    background: var(--text);
+    top: 60%; left: 80%;
+    animation: drift2 22s ease-in-out infinite alternate-reverse;
+}
+
+/* Shape 3: Medium, circular (Cinnamon bark) */
+.s3 {
+    width: 45px; height: 45px;
+    border-radius: 40%;
+    background: #8A8A8A;
+    top: 80%; left: 30%;
+    animation: drift3 25s ease-in-out infinite alternate;
+}
+
+/* Shape 4: Tiny accent */
+.s4 {
+    width: 15px; height: 15px;
+    background: var(--accent);
+    top: 10%; right: 20%;
+    animation: drift2 15s ease-in-out infinite alternate;
+}
+
+/* Shape 5: Large background blur */
+.s5 {
+    width: 100px; height: 100px;
+    background: var(--text);
+    bottom: 10%; right: 10%;
+    opacity: 0.05;
+    filter: blur(10px);
+    animation: drift1 30s ease-in-out infinite alternate-reverse;
+}
+
+/* The Drift Animations */
+@keyframes drift1 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(80px, -60px) rotate(45deg); }
+}
+
+@keyframes drift2 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-60px, 40px) rotate(-30deg); }
+}
+
+@keyframes drift3 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(40px, 80px) rotate(60deg); }
+}
+
+/* Make sure menu grid stays ABOVE the floating objects */
+.menu-grid {
+    position: relative;
+    z-index: 1; 
+}
 
        /* --- TESTIMONIALS --- */
 .testimonials-section {
@@ -842,6 +927,15 @@ footer {
 
     <!-- 5. MENU TEASER -->
     <section class="menu-teaser" id="provisions">
+
+            <!-- NEW FLOATING CONTAINER Menu -->
+            <div class="floating-spices">
+                <span class="spice s1"></span>
+                <span class="spice s2"></span>
+                <span class="spice s3"></span>
+                <span class="spice s4"></span>
+                <span class="spice s5"></span>
+            </div>
         <div class="marquee-wrapper">
             <div class="marquee-track">
                 <h2 class="filled">Daily Provisions</h2>
