@@ -839,6 +839,136 @@ footer {
             .footer-info { text-align: left; }
             .footer-bottom { flex-direction: column; gap: 1rem; }
         }
+
+        /* --- EXPANDING MENU MODAL --- */
+.menu-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* Prevents clicking when hidden */
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.menu-modal.active {
+    pointer-events: all; /* Allows clicking when visible */
+    opacity: 1;
+}
+
+.menu-modal-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(26, 26, 26, 0.8);
+    backdrop-filter: blur(15px);
+}
+
+.menu-modal-content {
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    width: 80vw;
+    max-width: 1000px;
+    height: 70vh;
+    display: flex;
+    overflow: hidden;
+    border-radius: 4px;
+    transform: scale(0.9) translateY(20px); /* Starts slightly smaller */
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); /* Elastic pop */
+}
+
+.menu-modal.active .menu-modal-content {
+    transform: scale(1) translateY(0); /* Pops to normal size */
+}
+
+.menu-modal-close {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    z-index: 10;
+    background: none;
+    border: 1px solid var(--text);
+    width: 40px; height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.menu-modal-close:hover {
+    background: var(--text);
+    color: #fff;
+}
+
+.modal-left {
+    width: 50%;
+    height: 100%;
+    background: #eee;
+}
+
+.modal-left img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+
+.modal-right {
+    width: 50%;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.modal-price {
+    font-family: var(--font-display);
+    color: var(--accent);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.modal-right h2 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+.modal-right p {
+    color: var(--grey);
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    font-size: 1.05rem;
+}
+
+.modal-meta {
+    border-top: 1px solid rgba(0,0,0,0.1);
+    padding-top: 2rem;
+}
+
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.meta-label {
+    color: var(--grey);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.meta-value {
+    font-weight: 600;
+}
          
     </style>
 </head>
@@ -928,6 +1058,39 @@ footer {
     <!-- 5. MENU TEASER -->
     <section class="menu-teaser" id="provisions">
 
+                <!-- EXPANDED MENU MODAL -->
+                <div class="menu-modal" id="menuModal">
+                    <div class="menu-modal-overlay" id="menuOverlay"></div>
+                    <div class="menu-modal-content">
+                        <button class="menu-modal-close" id="menuClose">&times;</button>
+                        
+                        <div class="modal-left">
+                            <img id="modalImg" src="" alt="Menu item detail">
+                        </div>
+                        
+                        <div class="modal-right">
+                            <span class="modal-price" id="modalPrice"></span>
+                            <h2 id="modalTitle"></h2>
+                            <p id="modalDesc"></p>
+                            
+                            <div class="modal-meta">
+                                <div class="meta-row">
+                                    <span class="meta-label">Preparation</span>
+                                    <span class="meta-value">Hand Dripped</span>
+                                </div>
+                                <div class="meta-row">
+                                    <span class="meta-label">Origin</span>
+                                    <span class="meta-value">Single Farm Lot</span>
+                                </div>
+                                <div class="meta-row">
+                                    <span class="meta-label">Availability</span>
+                                    <span class="meta-value">All Day</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             <!-- NEW FLOATING CONTAINER Menu -->
             <div class="floating-spices">
                 <span class="spice s1"></span>
@@ -958,22 +1121,23 @@ footer {
         </div>
 
         <div class="menu-grid">
-            <div class="menu-item reveal-up">
+            <div class="menu-item reveal-up" data-img="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1200&auto=format&fit=crop">
                 <h3>Filter Coffee</h3>
                 <span class="price">45 NOK</span>
                 <p>Brewed by the cup. Today’s batch features notes of red apple and dark chocolate.</p>
             </div>
-            <div class="menu-item reveal-up">
+            <div class="menu-item reveal-up" data-img="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200&auto=format&fit=crop">
                 <h3>Kanelbolle</h3>
                 <span class="price">55 NOK</span>
                 <p>The essential Scandinavian cinnamon bun. Warm, gooey, and dusted with pearl sugar.</p>
             </div>
-            <div class="menu-item reveal-up">
+            <div class="menu-item reveal-up" data-img="https://images.unsplash.com/photo-1536165744262-9b137589f5e3?q=80&w=1200&auto=format&fit=crop">
                 <h3>Oat Latte</h3>
                 <span class="price">65 NOK</span>
                 <p>Double shot espresso steamed with local Norwegian oat milk. Creamy and thick.</p>
             </div>
         </div>
+
     </section>
     <!-- TESTIMONIALS -->
 
@@ -1128,6 +1292,53 @@ footer {
             tItems.forEach(item => {
                 item.addEventListener('mouseenter', changeTestimonial);
             });
+
+                        // --- EXPANDING MENU MODAL LOGIC ---
+                        const menuModal = document.getElementById('menuModal');
+            const menuOverlay = document.getElementById('menuOverlay');
+            const menuClose = document.getElementById('menuClose');
+            const menuItems = document.querySelectorAll('.menu-item');
+
+            const openModal = (item) => {
+                // 1. Extract data from the clicked card
+                const title = item.querySelector('h3').innerText;
+                const price = item.querySelector('.price').innerText;
+                const desc = item.querySelector('p').innerText;
+                const imgSrc = item.getAttribute('data-img');
+
+                // 2. Inject data into the modal
+                document.getElementById('modalTitle').innerText = title;
+                document.getElementById('modalPrice').innerText = price;
+                document.getElementById('modalDesc').innerText = desc;
+                document.getElementById('modalImg').src = imgSrc;
+
+                // 3. Show modal and lock background scroll
+                menuModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeModal = () => {
+                // Hide modal and unlock background scroll
+                menuModal.classList.remove('active');
+                document.body.style.overflow = ''; 
+            };
+
+            // Attach click events to menu cards
+            menuItems.forEach(item => {
+                item.addEventListener('click', () => openModal(item));
+            });
+
+            // Attach click events to close triggers
+            menuClose.addEventListener('click', closeModal);
+            menuOverlay.addEventListener('click', closeModal);
+
+            // Premium touch: Close on 'Escape' key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && menuModal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+
 
             // --- 5. INTERSECTION OBSERVER FOR REVEALS ---
             const revealElements = document.querySelectorAll('.reveal-up, .reveal-left');
